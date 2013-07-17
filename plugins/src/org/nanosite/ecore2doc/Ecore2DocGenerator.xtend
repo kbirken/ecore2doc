@@ -150,7 +150,7 @@ class Ecore2DocGenerator {
 	'''
 
 
-	def private hasFeatures (GenClass it) {
+	def private boolean hasFeatures (GenClass it) {
 		if (! genFeatures.empty)
 			return true
 			
