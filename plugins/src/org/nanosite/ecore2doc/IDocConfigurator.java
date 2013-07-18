@@ -22,5 +22,13 @@ public interface IDocConfigurator {
 	String cfgSectionTag();
 	String cfgClassTag();
 
-	List<Section> cfgSections();	
+	List<Section> cfgSections();
+	
+	/*
+	 * If the ecore model is backed by a DSL, the syntax of the DSL might 
+	 * put additional restrictions on the ecore semantics. This hook can
+	 * be used to check if a feature which is optional due to the ecore model
+	 * is non-optional (i.e., mandatory) due to the DSL's syntax. 
+	 */
+	boolean isReallyOptional(String clazz, String feature);
 }

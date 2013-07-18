@@ -44,4 +44,14 @@ class FrancaDocConfigurator implements IDocConfigurator {
 
 		ret
 	}
+	
+	override
+	boolean isReallyOptional(String clazz, String feature) {
+		if (feature == "name") {
+			// for all classes other that "FTypeCollection", the "name"-feature is mandatory
+			clazz == "FTypeCollection"
+		} else
+			true
+	}
+	
 }

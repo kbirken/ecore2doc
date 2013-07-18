@@ -131,7 +131,7 @@ class Ecore2DocGenerator {
 		«getDocumentation»
 		«IF hasFeatures»
 		«startItems»
-			«generateAllFeatures(0)»
+			«generateAllFeatures(it, 0)»
 		«endItems»
 		«ENDIF»
 	'''
@@ -162,22 +162,22 @@ class Ecore2DocGenerator {
 	}
 
 
-	def private generateAllFeatures (GenClass it, int level) '''
+	def private generateAllFeatures (GenClass it, GenClass leaf, int level) '''
 		«FOR bc : baseGenClasses»
-		«bc.generateAllFeatures(level+1)»
+		«bc.generateAllFeatures(leaf, level+1)»
 		«ENDFOR»
-		«generateLocalFeatures(level>0)»
+		«generateLocalFeatures(leaf, level>0)»
 	'''
 	
-	def private generateLocalFeatures (GenClass it, boolean withBasename) '''
+	def private generateLocalFeatures (GenClass it, GenClass leaf, boolean withBasename) '''
 		«FOR f : genFeatures»
-			«itemStart»«f.genFeature»: «f.documentation»
+			«itemStart»«f.genFeature(leaf)»: «f.documentation»
 				«IF withBasename» Inherited from base class «genGenClassifierRef».«ENDIF»
 			«itemEnd»
 		«ENDFOR»
 	'''
 
-	def private genFeature (GenFeature it) {
+	def private genFeature (GenFeature it, GenClass clazz) {
 		val ef = ecoreFeature
 		val basetype =
 			if (typeGenClass!=null)
@@ -193,7 +193,8 @@ class Ecore2DocGenerator {
 		ret = ret + ' ' + ef.name.emphasize
 		if ((!ef.required) && (!ef.many)) {
 			// lists are never optional (they just may contain 0 elements)
-			ret = ret + ' (optional)'
+			if (isReallyOptional(clazz.name, ef.name))
+				ret = ret + ' (optional)'
 		}
 		ret
 	}
