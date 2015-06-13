@@ -99,7 +99,7 @@ class Ecore2DocGenerator {
 		val Set<GenClassifier> visited = newHashSet
 		val List<GenClassifier> result = newLinkedList
 		val allClasses = all.filter(typeof(GenClass))
-		while (! worklist.empty) {
+		while (! worklist.isEmpty) {
 			val c = worklist.pop
 			if (! (visited.contains(c) || exclude.contains(c))) {
 				visited.add(c)
